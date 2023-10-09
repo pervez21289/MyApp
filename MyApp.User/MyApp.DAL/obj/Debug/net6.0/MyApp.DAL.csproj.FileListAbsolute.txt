@@ -1,0 +1,12 @@
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\bin\Debug\net6.0\MyApp.DAL.deps.json
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\bin\Debug\net6.0\MyApp.DAL.dll
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\bin\Debug\net6.0\MyApp.DAL.pdb
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.csproj.AssemblyReference.cache
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.AssemblyInfoInputs.cache
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.AssemblyInfo.cs
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.csproj.CoreCompileInputs.cache
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.dll
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\refint\MyApp.DAL.dll
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\MyApp.DAL.pdb
+C:\Users\perve\source\MyApp\MyApp.User\MyApp.DAL\obj\Debug\net6.0\ref\MyApp.DAL.dll
