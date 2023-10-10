@@ -22,17 +22,8 @@ namespace MyApp.User.Models
         public string Designation { get; set; }
         public int CurrencyId { get; set; }
         public string BookingEmailId { get; set; }
-        public bool? IsTour { get; set; }
-        public bool? IsHotel { get; set; }
-        public bool? IsResturant { get; set; }
-        public bool? IsTransfer { get; set; }
-        public bool? IsSpa { get; set; }
-        public bool? IsFreelancers { get; set; }
-        public bool? IsHoliday { get; set; }
-        public bool? IsSafariGuide { get; set; }
-        public bool? IsTourGuide { get; set; }
-        public bool? IsLimoDriver { get; set; }
         public string Password { get; set; }
+        public bool? IsApproved { get; set; }
     }
 
 }
