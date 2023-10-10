@@ -15,5 +15,11 @@ namespace MyApp.DAL.Services
             return await QueryFirstOrDefaultAsync<Result>("SP_SaveSupplierServiceEmail", supplierServiceEmailModel);
 
         }
+
+        public async Task<Result> SaveSupplierServiceMapping(SupplierServiceMappingModel supplierServiceMappingModel)
+        {
+            return await QueryFirstOrDefaultAsync<Result>("SP_SaveSupplierServiceMapping", supplierServiceMappingModel);
+
+        }
     }
 }

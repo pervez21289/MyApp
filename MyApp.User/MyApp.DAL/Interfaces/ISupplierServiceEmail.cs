@@ -10,5 +10,6 @@ namespace MyApp.DAL.Interfaces
     public interface ISupplierServiceEmail
     {
         Task<Result> SaveSupplierServiceEmail(SupplierServiceEmailModel supplierServiceEmailModel);
+        Task<Result> SaveSupplierServiceMapping(SupplierServiceMappingModel supplierServiceMappingModel);
     }
 }

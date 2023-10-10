@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,5 +40,20 @@ namespace MyApp.User.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("SaveSupplierService")]
+        public async Task<Result> SaveSupplierServiceMapping(SupplierServiceMappingModel supplierServiceMappingModel)
+        {
+            try
+            {
+                return await _context.SaveSupplierServiceMapping(supplierServiceMappingModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

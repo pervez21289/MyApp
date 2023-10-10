@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.User.Models;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -57,7 +59,32 @@ namespace JWTAuthentication.NET6._0.Controllers
             return Unauthorized();
         }
 
-        [HttpPost]
+    ////    try
+    ////{
+    ////    string UserType = Convert.ToInt32(dt.Rows[0]["parentID"]) == 0 ? "Agent" : "SubAgent";
+    ////    var authClaims = new[]
+    ////    {
+    ////        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+    ////        new Claim("UserId",Convert.ToString(dt.Rows[0]["UserId"])),
+    ////        new Claim("UserType",UserType),
+    ////        new Claim("ParentID",Convert.ToString(0)),
+    ////        new Claim("EmailID",Convert.ToString(dt.Rows[0]["EmailID1"])),
+
+    ////    };
+    ////    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwttoken.SigningKey));
+    ////    var token = new JwtSecurityToken(
+    ////        issuer: _jwttoken.Site,
+    ////        audience: _jwttoken.Site,
+    ////        claims: authClaims,
+    ////        signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature)
+    ////    );
+    ////    var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
+    ////    var tmp = new Tuple<string>(encodedJwt);
+    ////    return await Task.FromResult(tmp);
+    ////}
+
+
+    [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] ApplicationUser model)
         {
@@ -75,41 +102,53 @@ namespace JWTAuthentication.NET6._0.Controllers
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
+            /*if (result.Succeeded)
+                {
+                    var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = user.Email }, Request.Scheme);
+                    EmailHelper emailHelper = new EmailHelper();
+                    bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
+
+                    if (emailResponse)
+                        return RedirectToAction("Index");
+                    else
+                    {
+                        // log email failed 
+                    }
+                }*/
+
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
         [HttpPost]
-        [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] ApplicationUser model)
+        [Route("resetpassword")]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
         {
-            var userExists = await _userManager.FindByNameAsync(model.UserName);
-            if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-            ApplicationUser user = new()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+            var user = await _userManager.FindByEmailAsync(resetPassword.Email);
+            if (user != null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not exists!" });
 
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+            var resetPassResult = await _userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
+            if (!resetPassResult.Succeeded)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Reset Password is failed" });
 
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
-            }
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new Response { Status = "Success", Message = "Reset Password is successful!" });
+        }
+
+        [HttpPost]
+        [Route("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword( string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not exists!" });
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            ////EmailHelper emailHelper = new EmailHelper();
+            ////bool emailResponse = emailHelper.SendEmailPasswordReset(user.Email, link);
+            return Ok(new Response { Status = "Success", Message = "Forgot password link is sent!" });
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
@@ -128,3 +167,27 @@ namespace JWTAuthentication.NET6._0.Controllers
         }
     }
 }
+
+////    try
+////{
+////    string UserType = Convert.ToInt32(dt.Rows[0]["parentID"]) == 0 ? "Agent" : "SubAgent";
+////    var authClaims = new[]
+////    {
+////        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+////        new Claim("UserId",Convert.ToString(dt.Rows[0]["UserId"])),
+////        new Claim("UserType",UserType),
+////        new Claim("ParentID",Convert.ToString(0)),
+////        new Claim("EmailID",Convert.ToString(dt.Rows[0]["EmailID1"])),
+
+////    };
+////    var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwttoken.SigningKey));
+////    var token = new JwtSecurityToken(
+////        issuer: _jwttoken.Site,
+////        audience: _jwttoken.Site,
+////        claims: authClaims,
+////        signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature)
+////    );
+////    var encodedJwt = new JwtSecurityTokenHandler().WriteToken(token);
+////    var tmp = new Tuple<string>(encodedJwt);
+////    return await Task.FromResult(tmp);
+////}
