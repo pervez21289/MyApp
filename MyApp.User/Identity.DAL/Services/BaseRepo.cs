@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyApp.DAL.Services
+namespace Identity.DAL.Services
 {
     public class BaseRepo
     {

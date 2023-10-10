@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyApp.DAL.Entities;
-using MyApp.DAL.Interfaces;
 using Identity.Models;
+using Identity.DAL.Interfaces;
+using Identity.DAL.Entities;
 
-namespace MyApp.User.Controllers
+namespace Identity.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

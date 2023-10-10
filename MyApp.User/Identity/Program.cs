@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MyApp.DAL.Interfaces;
-using MyApp.DAL.Services;
 using Identity.Models;
 using System.Text;
+using Identity.DAL.Services;
+using Identity.DAL.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<ISupplierServiceEmail, SupplierServiceEmail>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 // Adding Authentication
 builder.Services.AddAuthentication(options =>

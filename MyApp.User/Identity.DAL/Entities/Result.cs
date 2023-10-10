@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyApp.DAL.Entities
+namespace Identity.DAL.Entities
 {
     public class Result
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace MyApp.DAL.Entities
+namespace Identity.DAL.Entities
 {
 
 

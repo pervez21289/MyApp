@@ -1,4 +1,6 @@
-﻿using Identity.Models;
+﻿using Identity.DAL.Interfaces;
+using Identity.DAL.Models;
+using Identity.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,23 +10,26 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace JWTAuthentication.NET6._0.Controllers
+namespace Identity.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/supplier")]
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ISupplierService _supplierServcie;
         private readonly IConfiguration _configuration;
 
         public AuthenticateController(
+            ISupplierService supplierServcie,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _supplierServcie = supplierServcie;
             _configuration = configuration;
         }
 
@@ -84,11 +89,11 @@ namespace JWTAuthentication.NET6._0.Controllers
     ////}
 
 
-    [HttpPost]
+        [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] IdentityUser model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.UserName);
+            var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
@@ -96,27 +101,29 @@ namespace JWTAuthentication.NET6._0.Controllers
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName ,
+                UserName = model.Username ,
                 
             };
-            var result = await _userManager.CreateAsync(model, user.PasswordHash);
+            var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            /*if (result.Succeeded)
-                {
-                    var token = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = user.Email }, Request.Scheme);
-                    EmailHelper emailHelper = new EmailHelper();
-                    bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
+            if (result.Succeeded)
+            {
+                model.UserId=user.Id;
+                await _supplierServcie.SaveSupplier(model);
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = user.Email }, Request.Scheme);
+                //EmailHelper emailHelper = new EmailHelper();
+                //bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
 
-                    if (emailResponse)
-                        return RedirectToAction("Index");
-                    else
-                    {
-                        // log email failed 
-                    }
-                }*/
+                //if (emailResponse)
+                //    return RedirectToAction("Index");
+                //else
+                //{
+                //    // log email failed 
+                //}
+            }
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }

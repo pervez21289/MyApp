@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace JWTAuthentication.NET6._0.Controllers
+namespace Identity.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
