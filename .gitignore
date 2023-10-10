@@ -30,3 +30,6 @@
 /MyApp.User/.vs/ProjectEvaluation/myapp.user.projects.v6.1
 /MyApp.User/.vs/ProjectEvaluation/myapp.user.metadata.v6.1
 /MyApp.User/.vs/MyApp.User/v17/.futdcache.v2
+/MyApp.User/Identity/bin/Debug/net6.0
+/MyApp.User/Identity.DAL/bin/Debug/net6.0
+/MyApp.User/Identity.DAL/obj
