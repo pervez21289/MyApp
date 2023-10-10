@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/MyApp.User/MyApp.User/bin/Debug/net6.0/MyApp.User.pdb
+/MyApp.User/MyApp.User/bin/Debug/net6.0/MyApp.User.dll
+/MyApp.User/MyApp.User/bin/Debug/net6.0/MyApp.DAL.pdb
+/MyApp.User/MyApp.User/bin/Debug/net6.0/MyApp.DAL.dll
+/MyApp.User/MyApp.User/obj/Debug/net6.0/ref/MyApp.User.dll
+/MyApp.User/MyApp.User/obj/Debug/net6.0/refint/MyApp.User.dll
+/MyApp.User/MyApp.User/obj/Debug/net6.0/MyApp.User.pdb
+/MyApp.User/MyApp.User/obj/Debug/net6.0/MyApp.User.dll
+/MyApp.User/MyApp.User/obj/Debug/net6.0/MyApp.User.csproj.CoreCompileInputs.cache
+/MyApp.User/MyApp.User/obj/Debug/net6.0/MyApp.User.csproj.AssemblyReference.cache
+/MyApp.User/MyApp.DAL/bin/Debug/net6.0/MyApp.DAL.pdb
+/MyApp.User/MyApp.DAL/bin/Debug/net6.0/MyApp.DAL.dll
+/MyApp.User/MyApp.DAL/obj/Debug/net6.0/ref/MyApp.DAL.dll
+/MyApp.User/MyApp.DAL/obj/Debug/net6.0/refint/MyApp.DAL.dll
+/MyApp.User/MyApp.DAL/obj/Debug/net6.0/MyApp.DAL.dll
+/MyApp.User/MyApp.DAL/obj/Debug/net6.0/MyApp.DAL.pdb
