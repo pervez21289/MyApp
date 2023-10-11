@@ -23,5 +23,10 @@ namespace Identity.DAL.Services
             return await QueryFirstOrDefaultAsync<Result>("SP_SaveSupplierServiceMapping", supplierServiceMappingModel);
 
         }
+
+        public async Task<Result> SP_ApproveSupplier(string UserId,bool IsApproved)
+        {
+            return await QueryFirstOrDefaultAsync<Result>("SP_ApproveSupplier", new {UserId=UserId,IsApproved=IsApproved});
+        }
     }
 }

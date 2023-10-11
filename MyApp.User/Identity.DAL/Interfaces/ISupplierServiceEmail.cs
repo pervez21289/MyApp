@@ -12,6 +12,7 @@ namespace Identity.DAL.Interfaces
     {
         Task<Result> SaveSupplierServiceEmail(SupplierServiceEmailModel supplierServiceEmailModel);
         Task<Result> SaveSupplierServiceMapping(SupplierServiceMappingModel supplierServiceMappingModel);
-        
+        Task<Result> SP_ApproveSupplier(string UserId,bool IsApproved);
+
     }
 }

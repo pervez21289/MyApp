@@ -55,5 +55,19 @@ namespace Identity.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SP_ApproveSupplier")]
+        public async Task<Result> SP_ApproveSupplier(string UserId, bool IsApproved)
+        {
+            try
+            {
+                return await _context.SP_ApproveSupplier(UserId, IsApproved);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

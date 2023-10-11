@@ -153,7 +153,7 @@ namespace Identity.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User not exists!" });
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
+            var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = user.Email }, Request.Scheme);
             ////EmailHelper emailHelper = new EmailHelper();
             ////bool emailResponse = emailHelper.SendEmailPasswordReset(user.Email, link);
             return Ok(new Response { Status = "Success", Message = "Forgot password link is sent!" });
