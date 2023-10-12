@@ -10,6 +10,14 @@ namespace Identity.DAL.Entities
     {
         public string Message { get; set; }
         public bool IsSuccess { get; set; }
-        public long? Id { get; set; }
+        public long Id { get; set; }
+    }
+
+    public class ErrorInfo
+    {
+        public string ActionName { get; set; }
+        public string ControllerName { get; set; }
+        public string MethodName { get; set; }
+        public string Exception { get; set; }
     }
 }

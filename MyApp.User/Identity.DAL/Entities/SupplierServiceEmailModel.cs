@@ -20,22 +20,17 @@ namespace Identity.DAL.Entities
 
 
 
-    public class SupplierServiceEmailModel 
+    public class SupplierServiceEmailModel
     {
 
         public Guid SupplierId { get; set; }
-
         public int ServiceId { get; set; }
-
         public string EmailId { get; set; }
-
         public int Status { get; set; }
-
         public bool IsEmailVerified { get; set; }
-
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
-        
+
     }
 
 

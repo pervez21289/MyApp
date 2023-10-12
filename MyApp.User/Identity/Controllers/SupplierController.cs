@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Identity.Models;
 using Identity.DAL.Interfaces;
 using Identity.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Controllers
 {
@@ -18,14 +19,16 @@ namespace Identity.Controllers
     [ApiController]
     public class SupplierController : ControllerBase
     {
-        private readonly ISupplierServiceEmail _context;
+        private readonly ISupplierService _context;
+        private readonly ISupplierServiceMapping _contextMapping;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public SupplierController(ISupplierServiceEmail context)
+        public SupplierController(ISupplierService context, ISupplierServiceMapping contextMapping, UserManager<IdentityUser> userManager)
         {
             _context = context;
-        }
-
-      
+            _contextMapping = contextMapping;
+            _userManager = userManager;
+        }   
 
         [HttpPost]
         [Route("SaveSupplierServiceEmail")]
@@ -33,7 +36,7 @@ namespace Identity.Controllers
         {
             try
             {
-                return await _context.SaveSupplierServiceEmail(supplierServiceEmailModel);
+                return await _contextMapping.SaveSupplierServiceEmail(supplierServiceEmailModel);
             }
             catch (Exception)
             {
@@ -47,7 +50,7 @@ namespace Identity.Controllers
         {
             try
             {
-                return await _context.SaveSupplierServiceMapping(supplierServiceMappingModel);
+                return await _contextMapping.SaveSupplierServiceMapping(supplierServiceMappingModel);
             }
             catch (Exception)
             {
@@ -56,12 +59,37 @@ namespace Identity.Controllers
         }
 
         [HttpPost]
-        [Route("SP_ApproveSupplier")]
-        public async Task<Result> SP_ApproveSupplier(string UserId, bool IsApproved)
+        [Route("ApproveSupplier")]
+        public async Task<Result> ApproveSupplier(string UserId, bool IsApproved)
         {
             try
             {
-                return await _context.SP_ApproveSupplier(UserId, IsApproved);
+                if (IsApproved)
+                {
+                    return await _context.ApproveSupplier(UserId, IsApproved);
+                }
+                else
+                {
+                    var user = await _userManager.FindByIdAsync(UserId);
+                    if (user != null)
+                    {
+                        var result = await _userManager.DeleteAsync(user);
+                        if (result.Succeeded)
+                        {
+                            return await _context.ApproveSupplier(UserId, IsApproved);
+                        }
+                        else
+                        {
+                            return new Result() {Message="Issue in deleting the user!" };
+                        }
+                    }
+                    else
+                    {
+                        return new Result() { Message = "User not found!" };
+                    }
+                }
+
+                
             }
             catch (Exception)
             {

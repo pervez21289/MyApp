@@ -24,8 +24,6 @@ namespace Identity.Controllers
             _configuration = configuration;
         }
 
-
-
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create(string name)
@@ -38,7 +36,6 @@ namespace Identity.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "Role created successfully!" });
         }
-
 
         [HttpPost]
         [Route("UserRole")]
@@ -70,8 +67,6 @@ namespace Identity.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "User Role created successfully!" });
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {

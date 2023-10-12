@@ -13,7 +13,6 @@ namespace Identity.DAL.Services
     {
         public static string ConnectionString { get; set; }
 
-
         public object Query<T>(object gET_ALL_STATUS, object p, CommandType text)
         {
             throw new NotImplementedException();
@@ -79,9 +78,6 @@ namespace Identity.DAL.Services
             }
         }
 
-
-
-
         protected IDataReader GetReader<T>(string sql, object param = null, CommandType commandType = CommandType.StoredProcedure)
         {
             using (var conn = new SqlConnection(ConnectionString))
@@ -119,7 +115,6 @@ namespace Identity.DAL.Services
                 return table;
             }
         }
-
 
         protected async Task<DataSet> GetMultipleResult(string sql, object param = null, CommandType commandType = CommandType.StoredProcedure)
         {

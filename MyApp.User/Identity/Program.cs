@@ -7,6 +7,7 @@ using Identity.Models;
 using System.Text;
 using Identity.DAL.Services;
 using Identity.DAL.Interfaces;
+using SupplierMaster.Models.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 builder.Services.AddScoped<ISupplierServiceEmail, SupplierServiceEmail>();
 builder.Services.AddScoped<ISupplierService, SupplierService>();
+builder.Services.AddScoped<ISupplierServiceMapping, SupplierMappingService>();
+builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IEmail, Email>();
+builder.Services.AddScoped<ILog, LogService>();
+
+
 
 // Adding Authentication
 builder.Services.AddAuthentication(options =>

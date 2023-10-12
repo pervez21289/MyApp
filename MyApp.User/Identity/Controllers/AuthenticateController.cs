@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SupplierMaster.Models.Common;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,56 +13,71 @@ using System.Text;
 
 namespace Identity.Controllers
 {
-    [Route("api/[controller]/supplier")]
+    [Route("api/authenticate/supplier")]
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ISupplierService _supplierServcie;
-        private readonly IConfiguration _configuration;
+        private readonly ISupplierService _supplierService;
+        private readonly ICommonService _commonService;
+        private readonly IConfiguration _configuration; 
+        private readonly IEmail _email ;
+        private readonly ILog _logger;
 
         public AuthenticateController(
-            ISupplierService supplierServcie,
+            ISupplierService supplierService,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration, ICommonService commonService, IEmail email,ILog logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _supplierServcie = supplierServcie;
+            _supplierService = supplierService;
             _configuration = configuration;
+            _commonService = commonService;
+            _email = email;
+            _logger = logger;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    var userRoles = await _userManager.GetRolesAsync(user);
 
-                var authClaims = new List<Claim>
+                    var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    foreach (var userRole in userRoles)
+                    {
+                        authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    }
+
+                    var token = GetToken(authClaims);
+                    await _logger.Log(model.Username, "LoginSuccess", "Success");
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    });
                 }
-
-                var token = GetToken(authClaims);
-
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                await _logger.Log(model.Username, "LoginFailed", "UnauthorizedUser");
+                return Unauthorized();
             }
-            return Unauthorized();
+            catch(Exception ex)
+            {
+                await _logger.Log(model.Username, "LoginFailed", ex.Message);
+                throw;
+            }
         }
 
     ////    try
@@ -88,7 +104,6 @@ namespace Identity.Controllers
     ////    return await Task.FromResult(tmp);
     ////}
 
-
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -110,15 +125,24 @@ namespace Identity.Controllers
 
             if (result.Succeeded)
             {
+                if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                    await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+            
+                await _userManager.AddToRoleAsync(user, UserRoles.User);
+                
                 model.UserId=user.Id;
-                await _supplierServcie.SaveSupplier(model);
+                model.SupplierCode = "SUPP-001";
+                await _supplierService.SaveSupplier(model);
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = Url.Action("ConfirmEmail", "Email", new { token, email = user.Email }, Request.Scheme);
                 //EmailHelper emailHelper = new EmailHelper();
                 //bool emailResponse = emailHelper.SendEmail(user.Email, confirmationLink);
+                //Email obj = new Email();
+                await _email.SendEmail(user.Email, "", "Confirm Email", null, false, "", "");
 
                 //if (emailResponse)
-                //    return RedirectToAction("Index");
+
                 //else
                 //{
                 //    // log email failed 
