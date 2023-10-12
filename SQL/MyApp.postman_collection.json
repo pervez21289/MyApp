@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "35289610-8d42-4409-ad33-37804f8dea7f",
+		"name": "MyApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16316319"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Username\": \"example_username1\",\r\n  \"Email\": \"pervez@email.com\",\r\n    \"CityId\": 123,\r\n    \"CountryId\": 456,\r\n    \"CompanyName\": \"Sample Company\",\r\n    \"WebsiteName\": \"www.example.com\",\r\n    \"PermanantAddress\": \"123 Main St, City, Country\",\r\n    \"ISD_MobileNo\": \"+1-123-456-7890\",\r\n    \"Title\": \"Mr.\",\r\n    \"FirstName\": \"John\",\r\n    \"MobileNumber\": \"+1-987-654-3210\",\r\n    \"SkypeId\": \"john.skype\",\r\n    \"EmailId\": \"john@example.com\",\r\n    \"Designation\": \"Manager\",\r\n    \"CurrencyId\": 789,\r\n    \"BookingEmailId\": \"booking@example.com\",\r\n    \"Password\": \"Sample@Pass123\",\r\n    \"IsApproved\":false\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5248/api/Authenticate/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5248",
+					"path": [
+						"api",
+						"Authenticate",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Username\": \"example_username\",\r\n  \"Password\": \"Mehbooba@13\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5248/api/Authenticate/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5248",
+					"path": [
+						"api",
+						"Authenticate",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ServiceInEmail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZXhhbXBsZV91c2VybmFtZSIsImp0aSI6IjM3YzhjMmExLTY5YTctNGNlNi1iNGZiLTIxMDUyZGYzYTdkZSIsImV4cCI6MTY5Njg4MzYyMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.ncf09AZ7bxhcjoNVwwr4Gou8CzsrjWYNjDVXk_eqme4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\": 0,\r\n    \"SupplierId\": 123,\r\n    \"ServiceId\": 456,\r\n    \"EmailId\": \"example@email.com\",\r\n    \"Status\": 2,\r\n    \"IsEmailVerified\": true,\r\n    \"CreatedBy\": \"John\",\r\n    \"UpdatedBy\": \"Alice\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5248/api/Supplier/SaveSupplierServiceEmail",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5248",
+					"path": [
+						"api",
+						"Supplier",
+						"SaveSupplierServiceEmail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ApproveSupplier",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZXhhbXBsZV91c2VybmFtZSIsImp0aSI6IjVkYjkyMTViLWMxNzktNGNkYy04OGQzLTVjOGI3NTgxYmMxYiIsImV4cCI6MTY5NzA1NzQzNSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.thBNEGXFNw1wVpml9dOYhglmBwrUx_fBeBEHzojO8xA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5248/api/Supplier/SP_ApproveSupplier?UserId=022345e5-adfc-4f3c-87ef-613b49d3a0f7&IsApproved=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5248",
+					"path": [
+						"api",
+						"Supplier",
+						"SP_ApproveSupplier"
+					],
+					"query": [
+						{
+							"key": "UserId",
+							"value": "022345e5-adfc-4f3c-87ef-613b49d3a0f7"
+						},
+						{
+							"key": "IsApproved",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
